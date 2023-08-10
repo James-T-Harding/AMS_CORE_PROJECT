@@ -5,6 +5,14 @@ from forms import *
 from flask import redirect, url_for, render_template, request
 
 
+def render_nav(template, user_id, **kwargs):
+    kwargs.update(user_id=user_id)
+    kwargs["home_url"] = url_for('home', user_id=user_id)
+    kwargs["products_url"] = url_for('products', user_id=user_id)
+
+    return render_template(template, **kwargs)
+
+
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -25,7 +33,7 @@ def login():
 
 @app.route('/<int:user_id>/home')
 def home(user_id):
-    return render_template('home.html', user_id=user_id)
+    return render_nav('home.html', user_id)
 
 
 @app.route('/<int:user_id>/products')
@@ -35,7 +43,7 @@ def products(user_id):
     if category := request.args.get("category"):
         queryset = db.session.query(Product).join(Category).filter(Category.name == category)
 
-    return render_template('products.html', user_id=user_id, products=queryset.all())
+    return render_nav('products.html', user_id, products=queryset.all())
 
 
 @app.route('/<int:user_id>/products/<int:product_id>', methods=["GET", "POST"])
@@ -51,7 +59,7 @@ def detail(user_id, product_id):
 
         return redirect(url_for('home', user_id=user_id))
 
-    return render_template('product.html', product=product, form=form, user_id=user_id)
+    return render_nav('product.html', user_id, product=product, form=form)
 
 
 if __name__ == "__main__":
