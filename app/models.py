@@ -22,7 +22,9 @@ class Item(db.Model):
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30))
+    name = db.Column(db.String(30), nullable=False)
+    description = db.Column(db.Text)
+    image = db.Column(db.String(30))
     price = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     items = db.relationship('Item', backref='product')

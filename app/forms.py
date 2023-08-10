@@ -4,4 +4,8 @@ from wtforms import StringField, SubmitField
 
 class LoginForm(FlaskForm):
     username = StringField("Username: ")
-    submit = SubmitField("Log In")
+    login = SubmitField("Log In")
+
+
+class AddBasketForm(FlaskForm):
+    add = SubmitField("Add")
