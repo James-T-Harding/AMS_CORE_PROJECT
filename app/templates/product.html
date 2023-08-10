@@ -8,8 +8,13 @@
         </a>
     </div>
     <div class="col-sm-4">
-        <h1>{{ product.name }}</h1> { product.price }
-        <p> {{ product.description }}</p>
+        <div class="row">
+            <h1 class="col-sm-9">{{ product.name }}</h1>
+            <h2 class="col-sm-3">£{{ product.price }}</h2>
+        </div>
+        <div class="row">
+            <p class="col-sm-12">{{ product.description }}</p>
+        </div>
     </div>
     <form action="" method="post" class="col-sm-3">
         {{ form.add }}

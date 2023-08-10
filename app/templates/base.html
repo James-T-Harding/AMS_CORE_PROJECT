@@ -11,6 +11,20 @@
 </head>
 <body>
     <div class="container">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="{{ url_for('home', user_id=user_id) }}">Plant Shop</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li><a href="{{ url_for('home', user_id=user_id) }}">Home</a></li>
+              <li><a href="{{ url_for('products', user_id=user_id) }}">Products</a></li>
+              <li><a href="#">Categories</a></li>
+              <li><a href="#">Basket</a></li>
+            </ul>
+          </div>
+        </nav>
+
         {% block content %}
         {% endblock %}
     </div>

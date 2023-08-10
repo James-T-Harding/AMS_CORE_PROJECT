@@ -51,7 +51,7 @@ def detail(user_id, product_id):
 
         return redirect(url_for('home', user_id=user_id))
 
-    return render_template('product.html', product=product, form=form)
+    return render_template('product.html', product=product, form=form, user_id=user_id)
 
 
 if __name__ == "__main__":
