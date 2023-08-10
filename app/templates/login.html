@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Log In</h1>
+    <form method="POST" action="/login">
+        {{ form.hidden_tag() }}
+        {{ form.username.label }}
+        {{ form.username }}
+        <div class="error">
+            {% for error in form.username.errors %}
+                <span>{{error}}</span>
+            {% endfor %}
+        </div>
+        {{ form.submit }}
+    </form>
+
+</body>
+</html>
