@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST">
+    <div class="col-sm-11">
+        {% for cart_item in cart_items %}
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="/static/{{ cart_item.product.image }}" alt="Image not found.." width="100%">
+            </div>
+            <h3 class="col-sm-6">{{ cart_item.product.name }}</h3>
+            <div class="col-sm-1">
+                <input type="number" name="{{cart_item.id}}" value={{cart_item.quantity}}>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <input type="submit" class="btn btn-primary" value="Purchase">
+</form>
+{% endblock %}
