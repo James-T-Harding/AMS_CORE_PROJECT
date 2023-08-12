@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Order</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{item.product.name}}</td>
+            <td>{{item.quantity}}</td>
+            <td>£{{item.product.price}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <th>Total</th>
+            <th></th>
+            <th>£{{cart_total}}</th>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Address Details</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{form.address_line_1.label}} {{form.address_line_1(class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{form.county.label}} {{form.county(class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{form.postcode.label}} {{form.postcode(class_="form-control")}}
+    </div>
+    {{ form.submit(class_="btn btn-primary") }}
+</form>
+
+
+
+{% endblock %}

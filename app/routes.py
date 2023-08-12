@@ -5,11 +5,20 @@ from forms import *
 from flask import redirect, url_for, render_template, request
 
 
+def get_cart_items(user_id):
+    items = db.session.query(CartItem).join(Cart).filter(
+        Cart.user_id == user_id,
+    )
+    return items.all()
+
+
 def render_nav(template, user_id, **kwargs):
     kwargs.update(user_id=user_id)
     kwargs["home_url"] = url_for('home', user_id=user_id)
     kwargs["products_url"] = url_for('products', user_id=user_id)
     kwargs["basket_url"] = url_for('basket', user_id=user_id)
+    kwargs["cart_items"] = get_cart_items(user_id)
+    kwargs["cart_total"] = sum(item.total for item in kwargs["cart_items"])
 
     return render_template(template, **kwargs)
 
@@ -84,23 +93,43 @@ def basket(user_id):
                 db.session.delete(item)
 
         db.session.commit()
+        return redirect(url_for('checkout', user_id=user_id))
 
-        return render_nav('home.html', user_id)
-
-    items = db.session.query(CartItem).join(Cart).filter(
-        Cart.user_id == user_id,
-        Cart.active
-    )
-
-    return render_nav('basket.html', user_id, cart_items=items.all())
-
+    return render_nav('basket.html', user_id)
 
 
 @app.route('/<int:user_id>/checkout', methods=["GET", "POST"])
 def checkout(user_id):
-    pass
+    form = AddressForm()
+
+    if form.validate_on_submit():
+        user = User.query.get(user_id)
+        user.address_line_1 = form.data.get("address_line_1")
+        user.county = form.data.get("county")
+        user.postcode = form.data.get("postcode")
+        db.session.commit()
+
+        return redirect(url_for('payment', user_id=user_id))
+
+    return render_nav('checkout.html', user_id, form=form)
 
 
+@app.route('/<int:user_id>/payment', methods=["GET", "POST"])
+def payment(user_id):
+    form = PaymentForm()
+
+    if form.validate_on_submit():
+        # Throwing submitted values out...
+        del form
+
+        cart = Cart.query.filter_by(user_id=user_id).first()
+        cart.place_order()
+        db.session.delete(cart)
+        db.session.commit()
+
+        return redirect(url_for('home', user_id=user_id))
+
+    return render_nav('payment.html', user_id, form=form)
 
 
 if __name__ == "__main__":
