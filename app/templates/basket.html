@@ -4,7 +4,7 @@
 <form method="POST">
     <div class="col-sm-11">
         {% for cart_item in cart_items %}
-        <div class="row">
+        <div class="row greyed_block">
             <div class="col-sm-2">
                 <img src="/static/{{ cart_item.product.image }}" alt="Image not found.." width="100%">
             </div>

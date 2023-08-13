@@ -19,6 +19,7 @@ def render_nav(template, user_id, **kwargs):
     kwargs["basket_url"] = url_for('basket', user_id=user_id)
     kwargs["cart_items"] = get_cart_items(user_id)
     kwargs["cart_total"] = sum(item.total for item in kwargs["cart_items"])
+    kwargs["style_url"] = url_for('static', filename='style.css')
 
     return render_template(template, **kwargs)
 
@@ -100,7 +101,7 @@ def basket(user_id):
 
 @app.route('/<int:user_id>/checkout', methods=["GET", "POST"])
 def checkout(user_id):
-    form = AddressForm()
+    form = OrderForm()
 
     if form.validate_on_submit():
         user = User.query.get(user_id)

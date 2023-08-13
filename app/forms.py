@@ -7,11 +7,14 @@ class LoginForm(FlaskForm):
     login = SubmitField("Log In")
 
 
-class AddressForm(FlaskForm):
+class OrderForm(FlaskForm):
     address_line_1 = StringField("Address")
     county = StringField("County")
     postcode = StringField("PostCode")
-    submit = SubmitField("Continue")
+    number = StringField("Card Number")
+    name = StringField("Owner full name")
+    cvv = StringField("CVV")
+    purchase = SubmitField("Place Order")
 
 
 class PaymentForm(FlaskForm):

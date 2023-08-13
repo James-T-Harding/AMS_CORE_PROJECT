@@ -1,0 +1,10 @@
+.outlined_block {
+    border-style: groove;
+    margin: 5px;
+    color: black;
+}
+
+.greyed_block {
+    background-color: whitesmoke;
+    margin: 5px;
+}

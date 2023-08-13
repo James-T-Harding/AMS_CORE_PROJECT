@@ -26,19 +26,43 @@
     </tbody>
 </table>
 
-<h2>Address Details</h2>
 <form action="" method="post">
     {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{form.address_line_1.label}} {{form.address_line_1(class_="form-control")}}
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Address Details</h3>
+            <div class="form-group" style="width: 300px">
+                {{form.address_line_1.label}} {{form.address_line_1(class_="form-control")}}
+            </div>
+            <div class="form-group" style="width:200px">
+                {{form.county.label}} {{form.county(class_="form-control")}}
+            </div>
+            <div class="form-group" style="width:100px">
+                {{form.postcode.label}} {{form.postcode(class_="form-control")}}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h3>Payment Details</h3>
+            <div class="form-group">
+                {{form.number.label}} {{form.number(class_="form-control")}}
+            </div>
+            <div class="form-group" style="width:250px">
+                {{form.name.label}} {{form.name(class_="form-control")}}
+            </div>
+            <div class="form-group" style="width:75px">
+                {{form.cvv.label}} {{form.cvv(class_="form-control")}}
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        {{form.county.label}} {{form.county(class_="form-control")}}
-    </div>
-    <div class="form-group">
-        {{form.postcode.label}} {{form.postcode(class_="form-control")}}
-    </div>
-    {{ form.submit(class_="btn btn-primary") }}
+
+
+
+
+
+
+
+    
+    {{ form.purchase(class_="btn btn-primary") }}
 </form>
 
 
