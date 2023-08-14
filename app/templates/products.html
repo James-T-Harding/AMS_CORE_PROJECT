@@ -5,7 +5,7 @@
         <a href="products/{{ product.id }}">
             <div class="row outlined_block">
                 <div class="col-sm-3">
-                    <img src="/static/{{ product.image }}" alt="Image not found.." width="100%">
+                    <img src="{{url_for('static', filename=product.image)}}" alt="Image not found.." width="100%">
                 </div>
                 <div class="col-sm-9">
                     <h1>{{ product.name }}</h1>

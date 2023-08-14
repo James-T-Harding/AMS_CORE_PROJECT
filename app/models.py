@@ -27,12 +27,6 @@ class Cart(db.Model):
     def total(self):
         return sum(item.total for item in self.items)
 
-    def place_order(self):
-        self.payment = self.total
-
-        db.session.add(Order(items=self.items, status="pending"))
-        db.session.commit()
-
 
 class CartItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -75,3 +69,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     products = db.relationship('Product', backref='category')
+
+    @property
+    def image(self):
+        return self.products[0].image if self.products else ""

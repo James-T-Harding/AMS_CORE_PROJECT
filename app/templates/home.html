@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>This is the home page!</h1>
+{% for category in categories %}
+    <a style="text-decoration: none" href="products?category={{category.name}}">
+        <div class="category-block" style="background-image: url('/static/{{category.image}}')">
+            <h1>{{category.name}}</h1>
+        </div>
+    </a>
+{% endfor %}
 {% endblock %}

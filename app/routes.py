@@ -55,7 +55,7 @@ def login():
 
 @app.route('/<int:user_id>/home')
 def home(user_id):
-    return render_nav('home.html', user_id)
+    return render_nav('home.html', user_id, categories=Category.query.all())
 
 
 @app.route('/<int:user_id>/products')
