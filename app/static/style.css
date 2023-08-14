@@ -4,6 +4,10 @@
     color: black;
 }
 
+.outlined_block > div {
+    padding-left: 0;
+}
+
 .greyed_block {
     background-color: whitesmoke;
     margin: 5px;

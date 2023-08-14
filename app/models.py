@@ -14,15 +14,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30))
     password = db.Column(db.String(30))
-    address_line_1 = db.Column(db.String(50))
-    county = db.Column(db.String(30))
-    postcode = db.Column(db.String(10))
     carts = db.relationship('Cart', backref='user')
+    orders = db.relationship('Order', backref='user')
 
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    payment = db.Column(db.Integer)
     user_id = db.Column(db.Integer,  db.ForeignKey('user.id'), nullable=False)
     items = db.relationship('CartItem', backref='cart')
 
@@ -57,6 +54,11 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(ChoiceType(DELIVERY_STATUS), nullable=False)
     items = db.relationship('CartItem', backref='order')
+    address_line_1 = db.Column(db.String(50))
+    county = db.Column(db.String(30))
+    postcode = db.Column(db.String(10))
+    payment = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 class Product(db.Model):

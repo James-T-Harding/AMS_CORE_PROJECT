@@ -104,33 +104,25 @@ def checkout(user_id):
     form = OrderForm()
 
     if form.validate_on_submit():
-        user = User.query.get(user_id)
-        user.address_line_1 = form.data.get("address_line_1")
-        user.county = form.data.get("county")
-        user.postcode = form.data.get("postcode")
-        db.session.commit()
-
-        return redirect(url_for('payment', user_id=user_id))
-
-    return render_nav('checkout.html', user_id, form=form)
-
-
-@app.route('/<int:user_id>/payment', methods=["GET", "POST"])
-def payment(user_id):
-    form = PaymentForm()
-
-    if form.validate_on_submit():
-        # Throwing submitted values out...
-        del form
-
         cart = Cart.query.filter_by(user_id=user_id).first()
-        cart.place_order()
+
+        order = Order(
+            address_line_1=form.data.get("address_line_1"),
+            county=form.data.get("county"),
+            postcode=form.data.get("postcode"),
+            user_id=user_id,
+            status="pending",
+            payment=cart.total,
+            items=cart.items,
+        )
+
+        db.session.add(order)
         db.session.delete(cart)
         db.session.commit()
 
         return redirect(url_for('home', user_id=user_id))
 
-    return render_nav('payment.html', user_id, form=form)
+    return render_nav('checkout.html', user_id, form=form)
 
 
 if __name__ == "__main__":

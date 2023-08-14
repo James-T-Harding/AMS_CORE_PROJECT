@@ -3,6 +3,7 @@ from models import *
 
 trees = Category(name="Trees")
 shrubs = Category(name="Shrubs")
+indoors = Category(name="Indoors")
 
 pear_tree = Product(
     name="Pear Tree",
@@ -11,6 +12,22 @@ pear_tree = Product(
     image="pear.webp",
     description="A beautiful tree with delicious pears on its branches."
 )
+pine_tree = Product(
+    name="Pine Tree",
+    price=40,
+    category=trees,
+    image="pine.webp",
+    description="An evergreen, coniferous tree of varied size. Commonly used as a Christmas ornament."
+)
+flowers = Product(
+    name="Flower pot.",
+    price=15,
+    category=indoors,
+    image="flowers.jpg",
+    description="A pot to store flowers."
+)
+
+
 berry_bush = Product(
     name="Berry Bush",
     price=18,
@@ -26,5 +43,5 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-    db.session.add_all([trees, shrubs, pear_tree, berry_bush, user])
+    db.session.add_all([trees, shrubs, flowers, user])
     db.session.commit()
