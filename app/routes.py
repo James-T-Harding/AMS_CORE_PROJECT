@@ -1,11 +1,14 @@
-from app import app
+from app import app, bcrypt
 from app.models import *
-from forms import *
+from app.forms import *
 
 from flask import redirect, url_for, render_template, request
 
 
 def get_cart_items(user_id):
+    """
+    Gets all items of all carts associated with the passed in user.
+    """
     items = db.session.query(CartItem).join(Cart).filter(
         Cart.user_id == user_id,
     )
@@ -13,6 +16,11 @@ def get_cart_items(user_id):
 
 
 def render_nav(template, user_id, **kwargs):
+    """
+    Returns a template with useful keyword context already populated. Necessary for rendering any template
+    that inherits from base.html.
+    """
+
     kwargs.update(user_id=user_id)
     kwargs["home_url"] = url_for('home', user_id=user_id)
     kwargs["products_url"] = url_for('products', user_id=user_id)
@@ -25,6 +33,10 @@ def render_nav(template, user_id, **kwargs):
 
 
 def get_or_create(model, **kwargs):
+    """
+    Either gets the first instance of a model associated with keyword filters, or creates a new one
+    and returns that if none are available.
+    """
     if result := model.query.filter_by(**kwargs).first():
         return result
 
@@ -47,8 +59,10 @@ def login():
     if form.validate_on_submit():
         username = form.data.get("username")
         user = User.query.filter_by(username=username).first()
+        password = form.data.get("password")
 
-        return redirect(url_for('home', user_id=user.id))
+        if bcrypt.check_password_hash(user.password, password):
+            return redirect(url_for('home', user_id=user.id))
 
     return render_template('login.html', form=form)
 

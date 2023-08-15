@@ -1,4 +1,4 @@
-from app import app
+from app import app, bcrypt
 from models import *
 
 trees = Category(name="Trees")
@@ -36,12 +36,17 @@ berry_bush = Product(
     description="A not particularly beautiful berry bush with non-edible berries on its branches."
 )
 
-user = User(username="John Buyer")
+user = User(username="John Buyer", password=bcrypt.generate_password_hash("password"))
 
 
-with app.app_context():
-    db.drop_all()
-    db.create_all()
+def populate_db():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
 
-    db.session.add_all([trees, shrubs, flowers, user])
-    db.session.commit()
+        db.session.add_all([trees, shrubs, flowers, user])
+        db.session.commit()
+
+
+if __name__ == "__main__":
+    populate_db()
