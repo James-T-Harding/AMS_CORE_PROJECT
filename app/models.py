@@ -10,12 +10,29 @@ DELIVERY_STATUS = [
 ]
 
 
+def get_or_create(model, **kwargs):
+    """
+    Either gets the first instance of a model associated with keyword filters, or creates a new one
+    and returns that if none are available.
+    """
+    if result := model.query.filter_by(**kwargs).first():
+        return result
+
+    item = model(**kwargs)
+    db.session.add(item)
+    db.session.commit()
+
+    return item
+
+
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30))
     password = db.Column(db.String(30))
     carts = db.relationship('Cart', backref='user')
-    orders = db.relationship('Order', backref='user')
+    orders = db.relationship ('Order', backref='user')
 
 
 class Cart(db.Model):
@@ -27,6 +44,15 @@ class Cart(db.Model):
     def total(self):
         """Returns the total value of each item in the cart."""
         return sum(item.total for item in self.items)
+
+    def __contains__(self, product):
+        return any(item.product == product for item in self.items)
+
+    def add_item(self, product, quantity=1):
+        """Adds a given product to the cart, with an option to adjust the quantity (defaults to 1)"""
+        item = get_or_create(CartItem, cart=self, product=product)
+        item.quantity += quantity
+        db.session.commit()
 
 
 class CartItem(db.Model):
@@ -40,11 +66,6 @@ class CartItem(db.Model):
     def total(self):
         """Total value of CartItem accouting for quantity."""
         return self.quantity * self.product.price
-
-    def increment(self):
-        """Increments quantity."""
-        self.quantity += 1
-        db.session.commit()
 
 
 class Order(db.Model):

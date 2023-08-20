@@ -3,12 +3,6 @@ from tests import TestBase
 
 
 class TestModels(TestBase):
-    def setUp(self) -> None:
-        self.category = Category(name="Test Category")
-        self.product = Product(name="Test Product", category=self.category, price=32, image="TestImage")
-        self.cart = Cart(user_id=1)
-        self.item = CartItem(product=self.product, cart=self.cart, quantity=2)
-
     def test_item_total(self):
         self.assertEqual(64, self.item.total)
 
@@ -18,7 +12,7 @@ class TestModels(TestBase):
 
     def test_cart_total(self):
         product = Product(name="Other Product", category=self.category, price=24, image="TestImage")
-        item = CartItem(product=product, cart=self.cart, quantity=1)
+        CartItem(product=product, cart=self.cart, quantity=1)
 
         self.assertEqual(88, self.cart.total)
 

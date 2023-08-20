@@ -32,21 +32,6 @@ def render_nav(template, user_id, **kwargs):
     return render_template(template, **kwargs)
 
 
-def get_or_create(model, **kwargs):
-    """
-    Either gets the first instance of a model associated with keyword filters, or creates a new one
-    and returns that if none are available.
-    """
-    if result := model.query.filter_by(**kwargs).first():
-        return result
-
-    item = model(**kwargs)
-    db.session.add(item)
-    db.session.commit()
-
-    return item
-
-
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -88,9 +73,7 @@ def detail(user_id, product_id):
 
     if request.method == "POST":
         cart = get_or_create(Cart, user_id=user_id)
-        cart_item = get_or_create(CartItem, product=product, cart=cart)
-        cart_item.increment()
-        db.session.commit()
+        cart.add_item(product)
 
         return redirect(url_for('home', user_id=user_id))
 

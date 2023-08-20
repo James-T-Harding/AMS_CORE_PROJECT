@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1 class="header">Plant shop LTD</h1>
+<p>
+    Our mission is to sell plants of various types and sizes to people who want to buy from us.
+    We will continue to do this, as it is our job, and it will earn us money to do things like
+    purchasing plants.
+</p>
+<h3>Pick a category to get started...</h3>
 {% for category in categories %}
     <a style="text-decoration: none" href="products?category={{category.name}}">
         <div class="category-block" style="background-image: url('/static/{{category.image}}')">
