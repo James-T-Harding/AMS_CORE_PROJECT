@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Build'){
             steps{
-                echo 'Building'
+                sh "sudo apt install python python3-pip"
+                sh "pip install -r requirements.txt"
             }
         }
         stage('Test'){
