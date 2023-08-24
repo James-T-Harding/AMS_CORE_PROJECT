@@ -1,13 +1,4 @@
-from sqlalchemy_utils import ChoiceType
-
 from app import db
-
-
-DELIVERY_STATUS = [
-    ("pending", 'Pending'),
-    ("dispatched", 'Dispatched'),
-    ("delivered", "Delivered")
-]
 
 
 def get_or_create(model, **kwargs):
@@ -25,14 +16,12 @@ def get_or_create(model, **kwargs):
     return item
 
 
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30))
-    password = db.Column(db.String(30))
+    password = db.Column(db.String(120))
     carts = db.relationship('Cart', backref='user')
-    orders = db.relationship ('Order', backref='user')
+    orders = db.relationship('Delivery', backref='user')
 
 
 class Cart(db.Model):
@@ -60,7 +49,7 @@ class CartItem(db.Model):
     quantity = db.Column(db.Integer, default=0)
     cart_id = db.Column(db.Integer,  db.ForeignKey('cart.id'))
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-    delivery_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    delivery_id = db.Column(db.Integer, db.ForeignKey('delivery.id'))
 
     @property
     def total(self):
@@ -68,10 +57,10 @@ class CartItem(db.Model):
         return self.quantity * self.product.price
 
 
-class Order(db.Model):
+class Delivery(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(ChoiceType(DELIVERY_STATUS), nullable=False)
-    items = db.relationship('CartItem', backref='order')
+    status = db.Column(db.String(30))
+    items = db.relationship('CartItem', backref='delivery')
     address_line_1 = db.Column(db.String(50))
     county = db.Column(db.String(30))
     postcode = db.Column(db.String(10))

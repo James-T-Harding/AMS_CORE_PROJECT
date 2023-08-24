@@ -103,7 +103,7 @@ def checkout(user_id):
     if form.validate_on_submit():
         cart = Cart.query.filter_by(user_id=user_id).first()
 
-        order = Order(
+        order = Delivery(
             address_line_1=form.data.get("address_line_1"),
             county=form.data.get("county"),
             postcode=form.data.get("postcode"),
