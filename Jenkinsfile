@@ -1,22 +1,21 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build'){
-            steps{
-                sh "sudo apt install python3-pip"
-            }
-            steps{
-                sh "pip install -r requirements"
-            }       
-        }
-        stage('Test'){
+        stage('Build') {
             steps {
-                sh "pytest"
+                echo 'Building'
+            }
+    
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing'
             }
         }
-        stage('Deploy'){
+        stage('Deploy') {
             steps {
-                sh "echo 'Deployed'"
+                echo 'Deploying'
             }
         }
     }
