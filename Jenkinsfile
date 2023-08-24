@@ -12,7 +12,7 @@ pipeline {
         stage('Test'){
             steps{
                 sh "echo 'Testing using ${SECRET_KEY}...'"
-                sh "echo 'Tests passed."
+                sh "echo 'Tests passed.'"
             }
         }
         stage('Deploy'){
